@@ -1,7 +1,6 @@
-output "container_name" {
-  value = values(docker_container.nginx)[*].name
-}
-output "docker_password" {
-  value     = var.docker_password
-  sensitive = true
+output "container_names" {
+  value = [
+    module.dev.container_name,
+    module.staging.container_name
+  ]
 }

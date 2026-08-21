@@ -1,21 +1,11 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~>3.0"
-    }
-  }
+module "dev" {
+  source         = "./modules/nginx"
+  image_version  = "1.28"
+  container_name = "nginx-dev"
 }
-provider "docker" {}
-resource "docker_image" "nginx" {
-  name = "nginx:${var.image_version}"
-}
-resource "docker_container" "nginx" {
-  for_each = toset(["dev", "staging"])
-  name     = "terraform-nginx-${each.key}"
-  image    = docker_image.nginx.image_id
 
-  provisioner "local-exec" {
-    command = "echo Terraform created the container!"
-  }
+module "staging" {
+  source         = "./modules/nginx"
+  image_version  = "1.28"
+  container_name = "nginx-staging"
 }
